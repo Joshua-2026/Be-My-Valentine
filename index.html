@@ -2,59 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Be My Valentine 💘</title>
+  <title>For Trina 💘</title>
+
   <style>
     body {
       height: 100vh;
+      margin: 0;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      overflow: hidden;
+      text-align: center;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 40px;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      z-index: 2;
     }
 
     .buttons {
       position: relative;
-      width: 400px;
-      height: 200px;
+      width: 420px;
+      height: 220px;
+      z-index: 2;
     }
 
     button {
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       position: absolute;
     }
 
     #yes {
-      font-size: 2rem;
-      padding: 20px 40px;
+      font-size: 2.2rem;
+      padding: 22px 46px;
       background-color: #ff4d6d;
       color: white;
       left: 50%;
       transform: translateX(-50%);
+      transition: transform 0.2s ease;
     }
 
     #no {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       padding: 10px 20px;
       background-color: #adb5bd;
       color: black;
       left: 50%;
-      top: 100px;
+      top: 120px;
       transform: translateX(-50%);
+    }
+
+    /* Floating hearts & kisses */
+    .float {
+      position: absolute;
+      bottom: -50px;
+      font-size: 2rem;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>Will you be my Valentine? 💕</h1>
+  <h1>
+    Trina 💕<br />
+    Will you make me the happiest person<br />
+    and be my Valentine? 💘
+  </h1>
 
   <div class="buttons">
     <button id="yes" onclick="yesClicked()">YES 💖</button>
@@ -63,18 +112,63 @@
 
   <script>
     const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    let yesScale = 1;
 
+    /* NO runs away + YES grows */
     noButton.addEventListener("mouseover", () => {
-      const x = Math.random() * 300;
-      const y = Math.random() * 150;
+      const x = Math.random() * 320;
+      const y = Math.random() * 160;
       noButton.style.left = x + "px";
       noButton.style.top = y + "px";
+
+      yesScale += 0.1;
+      yesButton.style.transform = `translateX(-50%) scale(${yesScale})`;
     });
 
+    /* Floating hearts & kisses */
+    const emojis = ["❤️", "💖", "💋", "😘", "💕"];
+
+    function createFloat() {
+      const float = document.createElement("div");
+      float.className = "float";
+      float.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      float.style.left = Math.random() * 100 + "vw";
+      float.style.animationDuration = 4 + Math.random() * 3 + "s";
+      document.body.appendChild(float);
+
+      setTimeout(() => float.remove(), 7000);
+    }
+
+    setInterval(createFloat, 300);
+
+    /* Confetti explosion */
+    function confettiBoom() {
+      for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = "-10px";
+        confetti.style.backgroundColor =
+          `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+
+    /* YES clicked */
     function yesClicked() {
+      confettiBoom();
       document.body.innerHTML = `
-        <h1>YAYYYYY 💘🥰</h1>
-        <p style="font-size: 2rem;">Best decision ever 😌</p>
+        <h1>YAAAYYY 😍💘</h1>
+        <p style="font-size: 2rem; max-width: 700px;">
+          I knew you would make the right choice 💖<br /><br />
+          I love you so much 😘😘😘<br /><br />
+          💋💋💋 💕💕💕 💋💋💋<br />
+          ❤️❤️❤️❤️❤️❤️❤️
+        </p>
       `;
     }
   </script>
